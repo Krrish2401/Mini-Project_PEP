@@ -3,6 +3,8 @@
     flex-wrap:wrap;
     justify-content: space-between;
 }
-.box{
-    border:2px dashed black;
+
+button{
+    /* height: 30px; */
+    width: 30px;
 }
