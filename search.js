@@ -4,7 +4,16 @@ let query = param.get("q");
 // console.log(query);
 
 const container = document.getElementById('results');
-const heading = document.querySelector('h4');
+const heading = document.getElementById('searchQuery');
+
+if(query){
+    // heading.innerHTML = ''
+    heading.textContent = `Showing results for: "${query}"`;
+}
+else{
+    heading.textContent = "No search query provided";
+    container.innerHTML = "<p> PLease enter a search item.</p>"
+}
 
 fetch("https://dummyjson.com/products")
     .then(response => response.json())
@@ -12,6 +21,10 @@ fetch("https://dummyjson.com/products")
         const fp = data.products.filter(product => 
             product.title.toLowerCase().includes(query.toLowerCase())
         );
+
+        if (fp.length === 0){
+            container.innerHTML = `<p> NO product found, Try a different search maybe?!`
+        }
 
         fp.forEach(product => {
             const title = product.title;
@@ -31,4 +44,3 @@ fetch("https://dummyjson.com/products")
         });
     })
     .catch(error => console.log('Error:', error));
-

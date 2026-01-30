@@ -32,3 +32,9 @@ function getResults(){
     window.location.href = `search.html?q=${encodeURIComponent(query)}`;
     si.value = "";
 }
+
+si.addEventListener('keydown', function(event){
+    if (event.key === "Enter"){
+        getResults();
+    }
+})
