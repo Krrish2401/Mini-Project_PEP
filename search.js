@@ -4,16 +4,29 @@ let query = param.get("q");
 // console.log(query);
 
 const container = document.getElementById('results');
-const heading = document.querySelector('h4');
+const heading = document.getElementById('searchQuery');
+
+if(query){
+    // heading.innerHTML = ''
+    heading.textContent = `Showing results for: "${query}"`;
+}
+else{
+    heading.textContent = "No search query provided";
+    container.innerHTML = "<p> PLease enter a search item.</p>"
+}
 
 fetch("https://dummyjson.com/products")
     .then(response => response.json())
     .then(data => {
-        const filteredProducts = data.products.filter(product => 
+        const fp = data.products.filter(product => 
             product.title.toLowerCase().includes(query.toLowerCase())
         );
 
-        filteredProducts.forEach(product => {
+        if (fp.length === 0){
+            container.innerHTML = `<p> NO product found, Try a different search maybe?!`
+        }
+
+        fp.forEach(product => {
             const title = product.title;
             const price = product.price;
             const image = product.thumbnail;
@@ -24,7 +37,7 @@ fetch("https://dummyjson.com/products")
             productCard.innerHTML = `
                 <img src="${image}" alt="${title}">
                 <h3>${title}</h3>
-                <p class="price">$${price}</p>
+                <p class="price">Rs.${price}</p>
             `;
 
             container.appendChild(productCard);
