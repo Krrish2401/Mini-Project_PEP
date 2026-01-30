@@ -9,11 +9,11 @@ const heading = document.querySelector('h4');
 fetch("https://dummyjson.com/products")
     .then(response => response.json())
     .then(data => {
-        const filteredProducts = data.products.filter(product => 
+        const fp = data.products.filter(product => 
             product.title.toLowerCase().includes(query.toLowerCase())
         );
 
-        filteredProducts.forEach(product => {
+        fp.forEach(product => {
             const title = product.title;
             const price = product.price;
             const image = product.thumbnail;
@@ -24,10 +24,11 @@ fetch("https://dummyjson.com/products")
             productCard.innerHTML = `
                 <img src="${image}" alt="${title}">
                 <h3>${title}</h3>
-                <p class="price">$${price}</p>
+                <p class="price">Rs.${price}</p>
             `;
 
             container.appendChild(productCard);
         });
     })
     .catch(error => console.log('Error:', error));
+
