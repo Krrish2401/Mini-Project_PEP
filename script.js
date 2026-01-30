@@ -1,7 +1,8 @@
 const container = document.getElementById('productContainer');
 
-const vh = [];
-localStorage.setItem( 'ViewHistory',vh);
+if (!localStorage.getItem('ViewHistory')) {
+    localStorage.setItem('ViewHistory', JSON.stringify([]));
+}
 
 fetch("https://dummyjson.com/products")
     .then(response => response.json())
@@ -23,9 +24,10 @@ fetch("https://dummyjson.com/products")
             container.appendChild(productCard);
 
             productCard.addEventListener("click", ()=>{
-                historyArray = localStorage.getItem('ViewHistory');
+                let historyArray = JSON.parse(localStorage.getItem('ViewHistory'));
                 if(!historyArray.includes(product.id)){
                     historyArray.push(product.id);
+                    localStorage.setItem('ViewHistory', JSON.stringify(historyArray));
                 }
                 console.log('hist',historyArray);
                 window.location.href = `product.html?id=${product.id}`
@@ -43,4 +45,8 @@ function getResults(){
 
     window.location.href = `search.html?q=${encodeURIComponent(query)}`;
     si.value = "";
+}
+
+function goToHistory(){
+    window.location.href=`vh.html`;
 }

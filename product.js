@@ -28,9 +28,6 @@ fetch("https://dummyjson.com/products")
 
                 details.appendChild(productCard);
             }
-            else{
-                
-            }
         });
     })
     .catch(error => console.log('Error:', error));
