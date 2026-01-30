@@ -1,5 +1,8 @@
 const container = document.getElementById('productContainer');
 
+const vh = [];
+localStorage.setItem( 'ViewHistory',vh);
+
 fetch("https://dummyjson.com/products")
     .then(response => response.json())
     .then(data => {
@@ -18,6 +21,15 @@ fetch("https://dummyjson.com/products")
             `;
             
             container.appendChild(productCard);
+
+            productCard.addEventListener("click", ()=>{
+                historyArray = localStorage.getItem('ViewHistory');
+                if(!historyArray.includes(product.id)){
+                    historyArray.push(product.id);
+                }
+                console.log('hist',historyArray);
+                window.location.href = `product.html?id=${product.id}`
+            })
         });
     })
     .catch(error => console.log('Error:', error));
