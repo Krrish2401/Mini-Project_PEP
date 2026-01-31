@@ -25,11 +25,20 @@ fetch("https://dummyjson.com/products")
 
             productCard.addEventListener("click", ()=>{
                 let historyArray = JSON.parse(localStorage.getItem('ViewHistory'));
-                if(!historyArray.includes(product.id)){
-                    historyArray.push(product.id);
-                    localStorage.setItem('ViewHistory', JSON.stringify(historyArray));
+
+                const isThere = historyArray.findIndex(item => item.id === product.id);
+
+                if(isThere === -1){
+                    historyArray.push({
+                        id: product.id,
+                        timestamp: new Date().getTime()
+                    });
                 }
-                console.log('hist',historyArray);
+                else{
+                    historyArray[isThere].timestamp = new Date().getTime();
+                }
+
+                localStorage.setItem('ViewHistory', JSON.stringify(historyArray));
                 window.location.href = `product.html?id=${product.id}`
             })
         });
@@ -48,5 +57,5 @@ function getResults(){
 }
 
 function goToHistory(){
-    window.location.href=`vh.html`;
+    window.location.href=`history.html`;
 }
