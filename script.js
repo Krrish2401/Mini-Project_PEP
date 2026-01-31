@@ -1,4 +1,10 @@
+let cp = 1;
+let ip = 8;
+let allProducts = [];
+
 const container = document.getElementById('productContainer');
+const pb = document.getElementById('prevBtn');
+const nb = document.getElementById('nextBtn');
 
 if (!localStorage.getItem('ViewHistory')) {
     localStorage.setItem('ViewHistory', JSON.stringify([]));
@@ -7,44 +13,62 @@ if (!localStorage.getItem('ViewHistory')) {
 fetch("https://dummyjson.com/products")
     .then(response => response.json())
     .then(data => {
-        data.products.forEach(product => {
-            const title = product.title;
-            const price = product.price;
-            const image = product.thumbnail;
-            
-            const productCard = document.createElement('div');
-            productCard.className = 'product-card';
-            
-            productCard.innerHTML = `
-                <img src="${image}" alt="${title}">
-                <h3>${title}</h3>
-                <p class="price">$${price}</p>
-            `;
-            
-            container.appendChild(productCard);
+        allProducts = data.products;
+        if(allProducts.length == 0){
+            container.innerHTML = `<p>OOPS! No product found!`;
+            pb.disabled = true;
+            nb.disabled = true;
+            return;
+        }
 
-            productCard.addEventListener("click", ()=>{
-                let historyArray = JSON.parse(localStorage.getItem('ViewHistory'));
-
-                const isThere = historyArray.findIndex(item => item.id === product.id);
-
-                if(isThere === -1){
-                    historyArray.push({
-                        id: product.id,
-                        timestamp: new Date().getTime()
-                    });
-                }
-                else{
-                    historyArray[isThere].timestamp = new Date().getTime();
-                }
-
-                localStorage.setItem('ViewHistory', JSON.stringify(historyArray));
-                window.location.href = `product.html?id=${product.id}`
-            })
-        });
+        renderPage()
     })
     .catch(error => console.log('Error:', error));
 
+
+function renderPage() {
+    container.innerHTML = '';
+
+    let start = (cp - 1) * ip;
+    let end = start + ip;
+
+    let items = allProducts.slice(start, end);
+
+    items.forEach(product => {
+        let card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+        <img src ="${product.thumbnail}">
+        <h3>${product.title}</h3>
+        <p>${product.price}<p>
+        `
+
+        container.appendChild(card);
+
+        card.addEventListener("click", () => {
+            window.location.href = `http://localhost:5500/product.html?id=${product.id}`
+        })
+    })
+    const totalPages = Math.ceil(allProducts.length / ip);
+
+    pb.disabled = cp === 1;
+    nb.disabled = cp === totalPages;
+}
+
+pb.addEventListener("click", () => {
+    if (cp > 1) {
+        cp--;
+        renderPage();
+    }
+})
+
+nb.addEventListener("click", () => {
+    const totalPages = Math.ceil(allProducts.length / ip);
+    if (cp < totalPages) {
+        cp++;
+        renderPage();
+    }
+})
 
 const si = document.getElementsByClassName("searchInput")[0];
 
@@ -59,3 +83,8 @@ function getResults(){
 function goToHistory(){
     window.location.href=`history.html`;
 }
+si.addEventListener('keydown', function(event){
+    if (event.key === "Enter"){
+        getResults();
+    }
+})

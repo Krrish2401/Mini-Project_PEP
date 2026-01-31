@@ -4,7 +4,6 @@ let query = param.get("q");
 const container = document.getElementById('results');
 const queryDisplay = document.getElementById('search-query');
 
-// Display the search query
 queryDisplay.textContent = `Showing results for: "${query}"`;
 
 fetch("https://dummyjson.com/products")
@@ -35,9 +34,7 @@ fetch("https://dummyjson.com/products")
 
             container.appendChild(productCard);
 
-            // Add click event to navigate to product detail
             productCard.addEventListener('click', () => {
-                // Update view history
                 let historyArray = JSON.parse(localStorage.getItem('ViewHistory')) || [];
                 const isThere = historyArray.findIndex(item => item.id === product.id);
 
