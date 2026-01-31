@@ -3,16 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Display</title>
+    <title>Products - Product Store</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Products</h1>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-logo">Product Store</h1>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="history.html">History</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <h1>Browse Our Products</h1>
 
     <div class="search">
-        <input type="text" class="searchInput">
-        <button onClick=getResults()></button>
+        <input type="text" class="searchInput" placeholder="Search products...">
+        <button onClick=getResults()>🔍 Search</button>
     </div>
+    
+    <button id="vh" onclick="goToHistory()" title="View History"></button>
+    
     <div class="container" id="productContainer">
     </div>
 

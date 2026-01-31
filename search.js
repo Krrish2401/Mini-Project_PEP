@@ -1,19 +1,10 @@
 let param = new URLSearchParams(window.location.search);
-// console.log(param);
 let query = param.get("q");
-// console.log(query);
 
 const container = document.getElementById('results');
-const heading = document.getElementById('searchQuery');
+const queryDisplay = document.getElementById('search-query');
 
-if(query){
-    // heading.innerHTML = ''
-    heading.textContent = `Showing results for: "${query}"`;
-}
-else{
-    heading.textContent = "No search query provided";
-    container.innerHTML = "<p> PLease enter a search item.</p>"
-}
+queryDisplay.textContent = `Showing results for: "${query}"`;
 
 fetch("https://dummyjson.com/products")
     .then(response => response.json())
@@ -22,8 +13,9 @@ fetch("https://dummyjson.com/products")
             product.title.toLowerCase().includes(query.toLowerCase())
         );
 
-        if (fp.length === 0){
-            container.innerHTML = `<p> NO product found, Try a different search maybe?!`
+        if (fp.length === 0) {
+            container.innerHTML = '<p class="no-history">No products found matching your search.</p>';
+            return;
         }
 
         fp.forEach(product => {
@@ -37,10 +29,30 @@ fetch("https://dummyjson.com/products")
             productCard.innerHTML = `
                 <img src="${image}" alt="${title}">
                 <h3>${title}</h3>
-                <p class="price">Rs.${price}</p>
+                <p class="price">$${price}</p>
             `;
 
             container.appendChild(productCard);
+
+            productCard.addEventListener('click', () => {
+                let historyArray = JSON.parse(localStorage.getItem('ViewHistory')) || [];
+                const isThere = historyArray.findIndex(item => item.id === product.id);
+
+                if(isThere === -1){
+                    historyArray.push({
+                        id: product.id,
+                        timestamp: new Date().getTime()
+                    });
+                } else {
+                    historyArray[isThere].timestamp = new Date().getTime();
+                }
+
+                localStorage.setItem('ViewHistory', JSON.stringify(historyArray));
+                window.location.href = `product.html?id=${product.id}`;
+            });
         });
     })
-    .catch(error => console.log('Error:', error));
+    .catch(error => {
+        console.error('Error:', error);
+        container.innerHTML = '<p class="error">Error loading search results. Please try again later.</p>';
+    });

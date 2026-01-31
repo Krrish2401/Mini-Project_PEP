@@ -6,6 +6,10 @@ const container = document.getElementById('productContainer');
 const pb = document.getElementById('prevBtn');
 const nb = document.getElementById('nextBtn');
 
+if (!localStorage.getItem('ViewHistory')) {
+    localStorage.setItem('ViewHistory', JSON.stringify([]));
+}
+
 fetch("https://dummyjson.com/products")
     .then(response => response.json())
     .then(data => {
@@ -76,6 +80,9 @@ function getResults(){
     si.value = "";
 }
 
+function goToHistory(){
+    window.location.href=`history.html`;
+}
 si.addEventListener('keydown', function(event){
     if (event.key === "Enter"){
         getResults();
