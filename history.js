@@ -32,7 +32,7 @@ if (historyData.length === 0) {
                     historyContainer.appendChild(productCard);
 
                     productCard.addEventListener('click', () => {
-                        window.location.href = `product.html?id=${product.id}`;
+                        window.location.href = `./product.html?id=${product.id}`;
                     });
                 }
             });

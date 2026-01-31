@@ -48,7 +48,7 @@ fetch("https://dummyjson.com/products")
                 }
 
                 localStorage.setItem('ViewHistory', JSON.stringify(historyArray));
-                window.location.href = `product.html?id=${product.id}`;
+                window.location.href = `./product.html?id=${product.id}`;
             });
         });
     })

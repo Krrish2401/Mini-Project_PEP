@@ -46,7 +46,7 @@ function renderPage() {
         container.appendChild(card);
 
         card.addEventListener("click", () => {
-            window.location.href = `product.html?id=${product.id}`
+            window.location.href = `./product.html?id=${product.id}`
         })
     })
     const totalPages = Math.ceil(allProducts.length / ip);
@@ -76,12 +76,12 @@ function getResults(){
     const query = si.value.trim();
     if(!query) return;
 
-    window.location.href = `search.html?q=${encodeURIComponent(query)}`;
+    window.location.href = `./search.html?q=${encodeURIComponent(query)}`;
     si.value = "";
 }
 
 function goToHistory(){
-    window.location.href=`history.html`;
+    window.location.href=`./history.html`;
 }
 si.addEventListener('keydown', function(event){
     if (event.key === "Enter"){
