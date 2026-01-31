@@ -36,17 +36,17 @@ function renderPage() {
 
     items.forEach(product => {
         let card = document.createElement("div");
-        card.className = "card";
+        card.className = "product-card";
         card.innerHTML = `
         <img src ="${product.thumbnail}">
         <h3>${product.title}</h3>
-        <p>${product.price}<p>
+        <p class="price">$${product.price}</p>
         `
 
         container.appendChild(card);
 
         card.addEventListener("click", () => {
-            window.location.href = `http://localhost:5500/product.html?id=${product.id}`
+            window.location.href = `product.html?id=${product.id}`
         })
     })
     const totalPages = Math.ceil(allProducts.length / ip);

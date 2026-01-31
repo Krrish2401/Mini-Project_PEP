@@ -27,6 +27,20 @@ fetch("https://dummyjson.com/products")
             `;
 
                 details.appendChild(productCard);
+
+                let historyArray = JSON.parse(localStorage.getItem('ViewHistory')) || [];
+                const isThere = historyArray.findIndex(item => item.id === product.id);
+
+                if(isThere === -1){
+                    historyArray.push({
+                        id: product.id,
+                        timestamp: new Date().getTime()
+                    });
+                } else {
+                    historyArray[isThere].timestamp = new Date().getTime();
+                }
+
+                localStorage.setItem('ViewHistory', JSON.stringify(historyArray));
             }
         });
     })
